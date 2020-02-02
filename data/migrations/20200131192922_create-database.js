@@ -1,45 +1,49 @@
-
 exports.up = function(knex) {
-  return knex.schema.createTable('users', tbl => {
+  return knex.schema
+    .createTable("users", tbl => {
       tbl.increments();
-      tbl.string('username')
+      tbl
+        .text("username")
         .unique()
         .notNullable();
-      tbl.string('phoneNumber')
-        .unique();
-      tbl.string('password')
-        .notNullable();
-  })
-  .createTable('plants', tbl=> {
+      tbl.text("phoneNumber").unique();
+      tbl.text("password").notNullable();
+    })
+    .createTable("plants", tbl => {
       tbl.increments();
-      tbl.string('species')
+      tbl.text("nickName");
+      tbl
+        .text("species")
         .unique()
-        .notNullable()
-  })
-  .createTable('users_plants', tbl =>{
-      tbl.integer('userKey')
-        .unsigned()
-        .notNullable()
-        .references('id')
-        .inTable('users')
-        .onUpdate('CASCADE')
-        .onDelete('RESTRICT');
-      tbl.integer('plantKey')
-        .unsigned()
-        .notNullable()
-        .references('id')
-        .inTable('plants')
-        .onUpdate('CASCADE')
-        .onDelete('RESTRICT');
-      tbl.string('nickName');
-      tbl.int('h2oFrequency')
         .notNullable();
-      tbl.specificType('image', 'image');
-  })
+      tbl.integer("h2oFrequency").notNullable();
+      tbl.specificType("image", "image");
+    })
+    .createTable("users_plants", tbl => {
+      tbl
+        .integer("userKey")
+        .unsigned()
+        .notNullable()
+        .references("id")
+        .inTable("users")
+        .onUpdate("CASCADE")
+        .onDelete("CASCADE");
+      tbl
+        .integer("plantKey")
+        .unsigned()
+        .notNullable()
+        .references("id")
+        .inTable("plants")
+        .onUpdate("CASCADE")
+        .onDelete("CASCADE");
+
+        tbl.primary(['userKey', 'plantKey']);
+    });
 };
 
 exports.down = function(knex) {
-  return knex.schema.dropTableIfExists('users_plants')
-    .dropTableIfExists('plants')
-    .dropTableIfExists('users')
+  return knex.schema
+    .dropTableIfExists("users_plants")
+    .dropTableIfExists("plants")
+    .dropTableIfExists("users");
 };
