@@ -54,3 +54,7 @@ These routes are restricted to users that can provide a valid token
     This gathers the **users** `id` from the params property to identify which user to delete the plant from.  
     Currently requires the **users_plants** `id` from the client to identify which entry to delete. 
 
+    ---
+
+    ## Additional routes are available or can be made if you find that client app requires them. Let us know!
+
