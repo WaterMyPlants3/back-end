@@ -10,21 +10,6 @@ function isString(string, regex) {
   return false;
 }
 
-// function validate(data, schema) {
-//   const messages = [];
-//   for (const prop in data) {
-//     if (!isString(data[prop], schema[prop].match)) {
-//       messages.push({
-//         property: prop,
-//         message: schema[prop].message
-//       });
-//     }
-//   }
-//   if (messages.length) {
-//     throw { statusCode: 400, message: messages };
-//   }
-// }
-
 function validate(data, schema) {
   const message = [];
   for (const prop in schema) {
