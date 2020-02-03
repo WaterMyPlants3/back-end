@@ -35,7 +35,7 @@ router.post("/", validatePlant, async (req, res) => {
   }
 });
 
-router.put("/:id",validatePlant, async (req, res) => {
+router.put("/:id", validatePlant, async (req, res) => {
   try {
     const id = req.params.id;
     const plant = req.body;
@@ -67,15 +67,19 @@ router.get("/:id/users", async (req, res) => {
 });
 
 // :id plant id
-router.post("/:id/users", validateUsersPlantsFromPlant, async (req, res) => {
-  try {
-    const id = req.params.id;
-    const isCreated = await plantDb.insertUser(id, req.body);
-    res.status(201).json(isCreated);
-  } catch {
-    res.status(500).json({ error: "Internal Server Error" });
+router.post(
+  "/:id/users",
+  validateUsersPlantsFromPlant,
+  async (req, res, next) => {
+    try {
+      const id = req.params.id;
+      const isCreated = await plantDb.insertUser(id, req.body);
+      res.status(201).json(isCreated);
+    } catch (err) {
+      next(err);
+    }
   }
-});
+);
 
 // :id users_plants id
 router.delete("/:id/users", async (req, res) => {

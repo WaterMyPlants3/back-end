@@ -25,8 +25,12 @@ server.use(function(err, req, res, next) {
     res
       .status(err.statusCode)
       .json({ statusCode: 400, error: "Bad Request", message: err.message });
+  } else if (err.errno === 19) {
+    res
+      .status(409)
+      .json({ statusCode: 409, error: "Conflict", message: err.message });
   } else {
-    res.status(500).json({ statusCode: 500, error: "Internal Server Error" });
+    res.status(500).json({ statusCode: 500, error: err });
   }
 });
 module.exports = server;
