@@ -25,13 +25,13 @@ router.get("/:id", async (req, res) => {
   }
 });
 
-router.post("/", validateUser, async (req, res) => {
+router.post("/", validateUser, async (req, res, next) => {
   try {
     const user = req.body;
     const isCreated = await userDb.create(user);
     res.status(201).json(isCreated);
-  } catch {
-    res.status(500).json({ error: "Internal Server Error" });
+  } catch (err) {
+    next(err);
   }
 });
 
