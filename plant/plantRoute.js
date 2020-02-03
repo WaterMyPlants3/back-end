@@ -35,7 +35,7 @@ router.post("/", validatePlant, async (req, res) => {
   }
 });
 
-router.put("/:id", async (req, res) => {
+router.put("/:id",validatePlant, async (req, res) => {
   try {
     const id = req.params.id;
     const plant = req.body;
