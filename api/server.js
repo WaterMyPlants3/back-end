@@ -8,6 +8,7 @@ const server = express();
 server.use(helmet());
 server.use(cors());
 server.use(express.json());
+server.use(express.urlencoded({ extended: true }));
 
 server.use("/api/users", userRoute);
 server.use("/api/plants", plantRoute);

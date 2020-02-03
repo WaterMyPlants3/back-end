@@ -3,23 +3,21 @@ exports.up = function(knex) {
     .createTable("users", tbl => {
       tbl.increments();
       tbl
-        .text("username")
+        .string("username")
         .unique()
         .notNullable();
-      tbl.text("phoneNumber").unique();
-      tbl.text("password").notNullable();
+      tbl.string("phoneNumber").unique();
+      tbl.string("password").notNullable();
     })
     .createTable("plants", tbl => {
       tbl.increments();
-      tbl.text("nickName");
       tbl
-        .text("species")
+        .string("species")
         .unique()
         .notNullable();
-      tbl.integer("h2oFrequency").notNullable();
-      tbl.specificType("image", "image");
     })
     .createTable("users_plants", tbl => {
+      tbl.increments();
       tbl
         .integer("userKey")
         .unsigned()
@@ -27,7 +25,7 @@ exports.up = function(knex) {
         .references("id")
         .inTable("users")
         .onUpdate("CASCADE")
-        .onDelete("CASCADE");
+        .onDelete("RESTRICT");
       tbl
         .integer("plantKey")
         .unsigned()
@@ -35,9 +33,10 @@ exports.up = function(knex) {
         .references("id")
         .inTable("plants")
         .onUpdate("CASCADE")
-        .onDelete("CASCADE");
-
-        tbl.primary(['userKey', 'plantKey']);
+        .onDelete("RESTRICT");
+      tbl.string("nickName");
+      tbl.int("h2oFrequency").notNullable();
+      tbl.specificType("image", "image");
     });
 };
 
