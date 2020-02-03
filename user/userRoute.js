@@ -1,6 +1,10 @@
 const express = require("express");
 const router = express.Router();
 const userDb = require("./userDb");
+const { validateUser } = require("../middleware/validation/userValidation");
+const {
+  validateUsersPlantsFromUser
+} = require("../middleware/validation/usersplantsValidation");
 
 router.get("/", async (req, res) => {
   try {
@@ -21,17 +25,17 @@ router.get("/:id", async (req, res) => {
   }
 });
 
-router.post("/", async (req, res) => {
+router.post("/", validateUser, async (req, res, next) => {
   try {
     const user = req.body;
     const isCreated = await userDb.create(user);
     res.status(201).json(isCreated);
-  } catch {
-    res.status(500).json({ error: "Internal Server Error" });
+  } catch (err) {
+    next(err);
   }
 });
 
-router.put("/:id", async (req, res) => {
+router.put("/:id", validateUser, async (req, res) => {
   try {
     const id = req.params.id;
     const user = req.body;
@@ -63,7 +67,7 @@ router.get("/:id/plants", async (req, res) => {
 });
 
 // :id user id
-router.post("/:id/plants", async (req, res) => {
+router.post("/:id/plants", validateUsersPlantsFromUser, async (req, res) => {
   try {
     const id = req.params.id;
     const isCreated = await userDb.insertPlant(id, req.body);
@@ -74,7 +78,7 @@ router.post("/:id/plants", async (req, res) => {
 });
 
 // :id users_plants id
-router.put("/:id/plants", async (req, res) => {
+router.put("/:id/plants", validateUsersPlantsFromUser, async (req, res) => {
   try {
     const id = req.params.id;
     const isUpdated = await userDb.updatePlant(id, req.body);
