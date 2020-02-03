@@ -1,6 +1,10 @@
 const express = require("express");
 const router = express.Router();
 const plantDb = require("./plantDb");
+const { validatePlant } = require("../middleware/validation/plantValidation");
+const {
+  validateUsersPlantsFromPlant
+} = require("../middleware/validation/usersplantsValidation");
 
 router.get("/", async (req, res) => {
   try {
@@ -21,7 +25,7 @@ router.get("/:id", async (req, res) => {
   }
 });
 
-router.post("/", async (req, res) => {
+router.post("/", validatePlant, async (req, res) => {
   try {
     const plant = req.body;
     const isCreated = await plantDb.create(plant);
@@ -63,7 +67,7 @@ router.get("/:id/users", async (req, res) => {
 });
 
 // :id plant id
-router.post("/:id/users", async (req, res) => {
+router.post("/:id/users", validateUsersPlantsFromPlant, async (req, res) => {
   try {
     const id = req.params.id;
     const isCreated = await plantDb.insertUser(id, req.body);
