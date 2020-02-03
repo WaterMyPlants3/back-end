@@ -11,7 +11,7 @@ router.get("/", async (req, res) => {
     const plants = await plantDb.find();
     res.status(200).json(plants);
   } catch {
-    res.status(500).json({ error: "Internal Server Error" });
+    next(err);
   }
 });
 
@@ -21,7 +21,7 @@ router.get("/:id", async (req, res) => {
     const plants = await plantDb.findById(id);
     res.status(200).json(plants);
   } catch {
-    res.status(500).json({ error: "Internal Server Error" });
+    next(err);
   }
 });
 
@@ -31,7 +31,7 @@ router.post("/", validatePlant, async (req, res) => {
     const isCreated = await plantDb.create(plant);
     res.status(201).json(isCreated);
   } catch {
-    res.status(500).json({ error: "Internal Server Error" });
+    next(err);
   }
 });
 
@@ -42,7 +42,7 @@ router.put("/:id", validatePlant, async (req, res) => {
     const isUpdated = await plantDb.update(id, plant);
     res.status(201).json(isUpdated);
   } catch {
-    res.status(500).json({ error: "Internal Server Error" });
+    next(err);
   }
 });
 
@@ -52,7 +52,7 @@ router.delete("/:id", async (req, res) => {
     const isDeleted = await plantDb.remove(id);
     res.sendStatus(204);
   } catch {
-    res.status(500).json({ error: "Internal Server Error" });
+    next(err);
   }
 });
 
@@ -62,7 +62,7 @@ router.get("/:id/users", async (req, res) => {
     const users = await plantDb.findUsers(id);
     res.status(200).json(users);
   } catch {
-    res.status(500).json({ error: "Internal Server Error" });
+    next(err);
   }
 });
 
@@ -88,7 +88,7 @@ router.delete("/:id/users", async (req, res) => {
     const isDeleted = await plantDb.removeUser(id);
     res.status(200).json(isDeleted);
   } catch {
-    res.status(500).json({ error: "Internal Server Error" });
+    next(err);
   }
 });
 

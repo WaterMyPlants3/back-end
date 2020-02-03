@@ -11,7 +11,7 @@ router.get("/", async (req, res) => {
     const users = await userDb.find();
     res.status(200).json(users);
   } catch {
-    res.status(500).json({ error: "Internal Server Error" });
+    next(err);
   }
 });
 
@@ -21,7 +21,7 @@ router.get("/:id", async (req, res) => {
     const users = await userDb.findById(id);
     res.status(200).json(users);
   } catch {
-    res.status(500).json({ error: "Internal Server Error" });
+    next(err);
   }
 });
 
@@ -42,7 +42,7 @@ router.put("/:id", validateUser, async (req, res) => {
     const isUpdated = await userDb.update(id, user);
     res.status(201).json(isUpdated);
   } catch {
-    res.status(500).json({ error: "Internal Server Error" });
+    next(err);
   }
 });
 
@@ -52,7 +52,7 @@ router.delete("/:id", async (req, res) => {
     const isDeleted = await userDb.remove(id);
     res.sendStatus(204);
   } catch {
-    res.status(500).json({ error: "Internal Server Error" });
+    next(err);
   }
 });
 
@@ -62,7 +62,7 @@ router.get("/:id/plants", async (req, res) => {
     const plants = await userDb.findPlants(id);
     res.status(200).json(plants);
   } catch {
-    res.status(500).json({ error: "Internal Server Error" });
+    next(err);
   }
 });
 
@@ -73,7 +73,7 @@ router.post("/:id/plants", validateUsersPlantsFromUser, async (req, res) => {
     const isCreated = await userDb.insertPlant(id, req.body);
     res.status(201).json(isCreated);
   } catch {
-    res.status(500).json({ error: "Internal Server Error" });
+    next(err);
   }
 });
 
@@ -84,7 +84,7 @@ router.put("/:id/plants", validateUsersPlantsFromUser, async (req, res) => {
     const isUpdated = await userDb.updatePlant(id, req.body);
     res.status(200).json(isUpdated);
   } catch {
-    res.status(500).json({ error: "Internal Server Error" });
+    next(err);
   }
 });
 
@@ -95,7 +95,7 @@ router.delete("/:id/plants", async (req, res) => {
     const isDeleted = await userDb.removePlant(id);
     res.status(200).json(isDeleted);
   } catch {
-    res.status(500).json({ error: "Internal Server Error" });
+    next(err);
   }
 });
 

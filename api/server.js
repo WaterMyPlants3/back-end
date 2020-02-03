@@ -30,7 +30,9 @@ server.use(function(err, req, res, next) {
       .status(409)
       .json({ statusCode: 409, error: "Conflict", message: err.message });
   } else {
-    res.status(500).json({ statusCode: 500, error: err });
+    res
+      .status(500)
+      .json({ statusCode: 500, error: "Internal Error Server", message: err });
   }
 });
 module.exports = server;
