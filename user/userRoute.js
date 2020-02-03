@@ -35,7 +35,7 @@ router.post("/", validateUser, async (req, res) => {
   }
 });
 
-router.put("/:id", async (req, res) => {
+router.put("/:id", validateUser, async (req, res) => {
   try {
     const id = req.params.id;
     const user = req.body;
@@ -78,7 +78,7 @@ router.post("/:id/plants", validateUsersPlantsFromUser, async (req, res) => {
 });
 
 // :id users_plants id
-router.put("/:id/plants", async (req, res) => {
+router.put("/:id/plants", validateUsersPlantsFromUser, async (req, res) => {
   try {
     const id = req.params.id;
     const isUpdated = await userDb.updatePlant(id, req.body);
