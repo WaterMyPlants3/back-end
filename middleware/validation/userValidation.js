@@ -17,10 +17,9 @@ const validationSchema = {
   },
   phoneNumber: {
     match: /^\d{3}-\d{3}-\d{4}$/,
-    required: true,
+    required: false,
     message: {
-      match: "phoneNumber must be in this format, sample:123-456-7890",
-      required: "phoneNumber is required"
+      match: "phoneNumber must be in this format, sample:123-456-7890"
     }
   },
   password: {
