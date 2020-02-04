@@ -6,6 +6,8 @@ const {
   validateUsersPlantsFromPlant
 } = require("../middleware/validation/usersplantsValidation");
 
+const restricted = require("../middleware/restricted");
+
 router.get("/", async (req, res) => {
   try {
     const plants = await plantDb.find();

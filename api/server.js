@@ -12,8 +12,7 @@ server.use(cors());
 server.use(express.json());
 server.use(express.urlencoded({ extended: true }));
 server.use("/api/auth", authRouter);
-// server.use("/api/users", restricted, userRoute);
-server.use("/api/users", userRoute);
+server.use("/api/users", restricted, userRoute);
 server.use("/api/plants", plantRoute);
 
 server.get("/", (req, res) => {

@@ -21,7 +21,7 @@ function validate(data, schema) {
             messages.push(schema[prop].message[validator]);
           break;
         case "match":
-          if (!isString(data[prop], schema[prop].match)) {
+          if (data[prop] && !isString(data[prop], schema[prop].match)) {
             messages.push(schema[prop].message[validator]);
           }
           break;

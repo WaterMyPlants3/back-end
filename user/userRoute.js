@@ -5,6 +5,7 @@ const { validateUser } = require("../middleware/validation/userValidation");
 const {
   validateUsersPlantsFromUser
 } = require("../middleware/validation/usersplantsValidation");
+const restricted = require("../middleware/restricted");
 
 router.get("/", async (req, res) => {
   try {
