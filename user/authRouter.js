@@ -28,7 +28,7 @@ router.post("/login", (req, res) => {
       console.log("login user flag", user);
       if (user && bcrypt.compareSync(password, user.password)) {
         const token = signToken(user);
-        res.status(200).json({ token });
+        res.status(200).json({ id: user.id, token: token });
       } else {
         res.status(401).json({ message: "invalid user credentials" });
       }
