@@ -1,30 +1,52 @@
 const request = require("supertest");
 const server = require("../api/server.js");
+const db = require("../data/dbConfig.js");
+const jwt = require("jsonwebtoken");
+const body = [
+  {
+    id: 1,
+    username: "test1",
+    phoneNumber: "471-714-5247",
+    password: "password1"
+  },
+  {
+    id: 2,
+    username: "test2",
+    phoneNumber: "482-970-5826",
+    password: "password1"
+  }
+];
 
-router.get("/", async (req, res) => {
-    try {
-      const users = await userDb.find();
-      res.status(200).json(users);
-    } catch {
-      next(err);
-    }
-  });
-  
+const token = jwt.sign(
+  { username: "testUser", password: "testPasswrd" },
+  process.env.JWT_SECRET,
+  { expiresIn: "1d" }
+);
+
 describe("/api/users", () => {
-  it("GET /", async () => {
-    const expectedStatusCode = 200;
+  beforeEach(async () => {
+    await db("users").truncate();
+    await db("users").insert(body);
+  });
+  describe("GET /", () => {
+    it("should get 200 status code", async () => {
+      const expectedStatusCode = 200;
+      const response = await request(server)
+        .get("/api/users")
+        .set("Authorization", token);
 
-    // do a get request to our api (server.js) and inspect the response
-    const response = await request(server).get("/");
+      expect(response.status).toEqual(expectedStatusCode);
+      expect(response.status).not.toEqual(400);
+    });
 
-    expect(response.status).toEqual(expectedStatusCode);
+    it("should return JSON object", async () => {
+      const expectedBody = body;
+      const response = await request(server)
+        .get("/api/users")
+        .set("Authorization", token);
 
-    // same test using promise .then() instead of async/await
-    // let response;
-    // return request(server).get('/').then(res => {
-    //   response = res;
-
-    //   expect(response.status).toEqual(expectedStatusCode);
-    // })
+      expect(response.body).toEqual(expectedBody);
+      expect(response.body).not.toEqual({ nodata: "nodata" });
+    });
   });
 });
