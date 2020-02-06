@@ -32,34 +32,31 @@ router.post('/:id/plants', (req, res)=>{
     Plants.findBySpecies(newPlant.species)
         .then(results =>{
             if(results.length > 0) {
-                Users.addPlant(id, results, newPlant)
+                Users.addPlant(id, results[0].id, newPlant)
                     .then(plant => {
-                        res.status(201).json({plant})
+                        res.status(201).json(plant)
                     })
                     .catch(()=>{
                         res.status(500).json({message: "sorry, failed to add that plant to your list"})
                     })
             } else {
-                console.log('inside the else')
-                Plants.add(newPlant.species)
-                    console.log('adding fresh plant', newPlant.species)
-                    .then(freshlyMade =>{
-                        console.log('freshlymade', freshlyMade)
-                        console.log('users router id else flag', id)
+                Plants.add(req.body.species)
+                    .then(freshlyMade=>{
                         Users.addPlant(id, freshlyMade[0], newPlant)
-                            .then(plant => {
-                                res.status(201).json({plant})
+                            .then(added => {
+                                res.status(201).json(added)
                             })
                             .catch(()=>{
-                                res.status(500).json({message: "sorry, failed to add that plant to your list"})
-                         })
+                                res.status(500).json({message: 'failed to add your plant'})
+                            })
                     })
                     .catch(()=>{
                         res.status(500).json({message: 'failed to create that new plant'})
                     })
             }
         })
-        .catch(()=>{
+        .catch((err)=>{
+            console.log('error', err)
             res.status(500).json({message: 'failed to get those plants for you'})
         })
 })

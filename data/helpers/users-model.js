@@ -51,10 +51,10 @@ function getPlants(id) {
 
 function addPlant(id, plant, plantData) {
     const parsedId = parseInt(id)
-    console.log('plant', plant, 'plantData',plantData)
+    console.log('id', parsedId, 'plant', plant, 'plantData',plantData)
     return db('users_plants').insert({
         userKey: parsedId,
-        plantKey: plant[0].id,
+        plantKey: plant,
         h2oFrequency: plantData.h2oFrequency,
         nickname: plantData.nickname,
         image: plantData.image

@@ -18,7 +18,8 @@ function findBySpecies(name){
 
 function add(plant) {
     console.log('inside plants add fn', plant)
-    return db('plants').insert({species: plant});
+    return db('plants').insert({species: plant})
+    //struggling to get the data to return out of here
 }
 
 function update(id, plant) {
