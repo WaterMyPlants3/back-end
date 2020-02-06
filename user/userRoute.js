@@ -20,7 +20,7 @@ router.get("/:id", async (req, res, next) => {
     const id = req.params.id;
     const users = await userDb.findById(id);
     res.status(200).json(users);
-  } catch {
+  } catch (err) {
     next(err);
   }
 });
