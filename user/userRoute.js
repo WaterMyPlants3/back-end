@@ -67,51 +67,51 @@ router.get("/:id/plants", async (req, res) => {
   }
 });
 
-
+router.post('/adduserplant', (req, res)=>{
+  userDb.insertPlant(1,1,1)
+    .then( newplant => {
+      res.status(201).json(newplant)
+    })
+    .catch(()=>{
+      res.status(500).json({message: 'did not add'})
+    })
+})
 
 // :id user id
 router.post("/:id/plants", (req, res) => {
   const id = req.params.id
   const newPlant = req.body
-
   //gets any plants from plant table with specified species name
   plantDb.findBySpecies(newPlant.species)
     .then(results => {
       //checks if the results of that query has any results
       //if it's true it adds plant to user's list of plants
       if(results.length > 0) {
-        console.log('inside if statement')
-        console.log('if:: ', 'newPlant: ', newPlant, ' results id: ', results[0].id)
-        userDb.insertPlant(id, results[0].id, newPlant)
-          console.log('inserting plant')
-          .then(addedplant=> {
-            console.log('plant inserted')
-            console.log('added', addedplant)
-            res.status(201).json({message: 'you added a plant'})
+        userDb.insertPlant(id, results[0].id, req.body)
+          .then(newPlant => {
+            res.status(201).json(newPlant);
           })
           .catch(()=>{
-            res.status(500).json({message: 'failed to add your new plant'})
+            res.status(500).json({message: 'error inserting new plant'})
           })
       //if false is returned we will create that new plant and add it
       } else {
-        plantDb.create(newPlant.species)
+        plantDb.create(req.body.species)
           .then(createdPlant => {
-            //id for the userKey, createdPlant for the plantKey, newPlant for h20Frequency and other data
-            userDb.insertPlant(id, createdPlant[0], newPlant)
-              .then(plant => {
-                res.status(201).json(plant)
+            userDb.insertPlant(id, createdPlant[0], req.body)
+              .then(addCreated=>{
+                res.status(201).json(addCreated)
               })
               .catch(()=>{
-                res.status(500).json({message: 'failed to add your new plant'})
+                res.status(500).json({message: 'failed to add your newly created plant'})
               })
           })
           .catch(()=>{
-            res.status(500).json({message: 'failed to create new plant'})
+            res.status(500).json({message: 'failed to create plant'})
           })
       }
     })
     .catch((err)=>{
-      console.log('error', err)
       res.status(500).json({message: 'failed to get those plants for you'})
     })
 });

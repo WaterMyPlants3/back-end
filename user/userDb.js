@@ -56,13 +56,11 @@ function findPlants(userKey) {
 }
 
 function insertPlant(userId, plantId, plantData) {
-  const parsedId = parseInt(userId)
-  console.log('user id', parsedId, 'plant id', plantId, 'plantData', plantData)
   return db('users_plants').insert({
-    userKey: parsedId,
+    userKey: userId,
     plantKey: plantId,
     h2oFrequency: plantData.h2oFrequency,
-    nickname: plantData.nickname,
+    nickName: plantData.nickName,
     image: plantData.image
     })
 }

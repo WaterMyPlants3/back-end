@@ -25,6 +25,7 @@ function findById(id) {
 }
 
 function create(plant) {
+  console.log('plant', plant)
   return db("plants").insert({species: plant});
 }
 
