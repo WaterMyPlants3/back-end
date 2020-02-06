@@ -17,11 +17,15 @@ function validate(data, schema) {
     for (const validator in schema[prop].message) {
       switch (validator) {
         case "required":
-          if (schema[prop].required && !data[prop])
+          if (schema[prop].required && !data[prop]) {
+            console.log("req");
             messages.push(schema[prop].message[validator]);
+          }
           break;
         case "match":
           if (data[prop] && !isString(data[prop], schema[prop].match)) {
+            console.log(prop);
+            console.log("ma");
             messages.push(schema[prop].message[validator]);
           }
           break;

@@ -7,6 +7,8 @@ const authRouter = require("../user/authRouter");
 const restricted = require("../middleware/restricted");
 const server = express();
 
+
+
 server.use(helmet());
 server.use(cors());
 server.use(express.json());
