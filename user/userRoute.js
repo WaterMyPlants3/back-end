@@ -1,6 +1,7 @@
 const express = require("express");
 const router = express.Router();
 const userDb = require("./userDb");
+const plantDb = require('../plant/plantDb')
 const { validateUser } = require("../middleware/validation/userValidation");
 const {
   validateUsersPlantsFromUser
@@ -66,16 +67,56 @@ router.get("/:id/plants", async (req, res) => {
   }
 });
 
+router.post('/adduserplant', (req, res)=>{
+  userDb.insertPlant(1,1,1)
+    .then( newplant => {
+      res.status(201).json(newplant)
+    })
+    .catch(()=>{
+      res.status(500).json({message: 'did not add'})
+    })
+})
+
 // :id user id
-router.post("/:id/plants", validateUsersPlantsFromUser, async (req, res) => {
-  try {
-    const id = req.params.id;
-    const isCreated = await userDb.insertPlant(id, req.body);
-    res.status(201).json(isCreated);
-  } catch {
-    next(err);
-  }
+router.post("/:id/plants", (req, res) => {
+  const id = req.params.id
+  const newPlant = req.body
+  //gets any plants from plant table with specified species name
+  plantDb.findBySpecies(newPlant.species)
+    .then(results => {
+      //checks if the results of that query has any results
+      //if it's true it adds plant to user's list of plants
+      if(results.length > 0) {
+        userDb.insertPlant(id, results[0].id, req.body)
+          .then(newPlant => {
+            res.status(201).json(newPlant);
+          })
+          .catch(()=>{
+            res.status(500).json({message: 'error inserting new plant'})
+          })
+      //if false is returned we will create that new plant and add it
+      } else {
+        plantDb.create(req.body.species)
+          .then(createdPlant => {
+            userDb.insertPlant(id, createdPlant[0], req.body)
+              .then(addCreated=>{
+                res.status(201).json(addCreated)
+              })
+              .catch(()=>{
+                res.status(500).json({message: 'failed to add your newly created plant'})
+              })
+          })
+          .catch(()=>{
+            res.status(500).json({message: 'failed to create plant'})
+          })
+      }
+    })
+    .catch((err)=>{
+      res.status(500).json({message: 'failed to get those plants for you'})
+    })
 });
+
+
 
 // :id users_plants id
 router.put("/:id/plants", validateUsersPlantsFromUser, async (req, res) => {
