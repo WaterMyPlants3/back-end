@@ -25,7 +25,7 @@ const validationSchemaFromUser = {
   },
   h2oFrequency: {
     required: true,
-    match: /^\d+$/i,
+    match: /^\d+$/,
     message: {
       match: "h2oFrequency must be number",
       required: "h2oFrequency is required"
@@ -58,7 +58,7 @@ const validationSchemaFromPlant = {
   },
   h2oFrequency: {
     required: true,
-    match: /^\d+$/i,
+    match: /^\d+$/,
     message: {
       match: "h2oFrequency must be number",
       required: "h2oFrequency is required"
