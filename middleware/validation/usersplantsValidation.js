@@ -7,16 +7,14 @@ module.exports = { validateUsersPlantsFromUser, validateUsersPlantsFromPlant };
 
 const validationSchemaFromUser = {
   plantKey: {
-    required: true,
-    match: /^\d+$/,
+    required: false,
     message: {
       match: "plantKey must be number",
       required: "plantKey is required"
     }
   },
   nickName: {
-    required: true,
-    match: /^[\w\s]{4,20}$/i,
+    required: false,
     message: {
       match:
         "nickName must be 4-20 characters consist of letters, digits, _, and spaces",
@@ -24,8 +22,6 @@ const validationSchemaFromUser = {
     }
   },
   h2oFrequency: {
-    required: true,
-    match: /^\d+$/i,
     message: {
       match: "h2oFrequency must be number",
       required: "h2oFrequency is required"

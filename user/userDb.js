@@ -55,8 +55,14 @@ function findPlants(userKey) {
     ]);
 }
 
-function insertPlant(userKey, plant) {
-  return db("users_plants").insert({ userKey, ...plant });
+function insertPlant(userId, plantId, plantData) {
+  return db('users_plants').insert({
+    userKey: userId,
+    plantKey: plantId,
+    h2oFrequency: plantData.h2oFrequency,
+    nickName: plantData.nickName,
+    image: plantData.image
+    })
 }
 
 function updatePlant(id, plant) {

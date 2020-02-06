@@ -3,6 +3,7 @@ const db = require("../data/dbConfig");
 module.exports = {
   find,
   findById,
+  findBySpecies,
   create,
   update,
   remove,
@@ -15,12 +16,17 @@ function find() {
   return db("plants");
 }
 
+function findBySpecies(name){
+  return db('plants').where({species: name});
+}
+
 function findById(id) {
   return db("plants").where({ id });
 }
 
 function create(plant) {
-  return db("plants").insert(plant);
+  console.log('plant', plant)
+  return db("plants").insert({species: plant});
 }
 
 function update(id, plant) {
