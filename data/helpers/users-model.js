@@ -7,9 +7,9 @@ module.exports = {
     add,
     update,
     remove,
-    //plant based helpers
+
+    //users plants based helpers
     getPlants,
-    getPlantById,
     addPlant,
     updatePlant,
     removePlant
@@ -27,10 +27,10 @@ function add(user) {
     return db('users').insert(user);
 }
 
-function update(givenId, user) {
-    const parsedId = parseInt(givenId)
+function update(id, user) {
+    //const parsedId = parseInt(givenId)
     return db('users')
-        .where({id: parsedId})
+        .where({id})
         .update(user);
 }
 
@@ -43,4 +43,29 @@ function remove(id) {
 //begin user plants functions
 
 function getPlants(id) {
+    return db.select('users_plants.id', 'species', 'nickName', 'h2oFrequency', 'image', 'username', 'userKey', 'plantKey').from('users_plants')
+    .join('plants', 'users_plants.plantKey', 'plants.id')
+    .join('users', 'users_plants.userKey', 'users.id')
+    .where({userKey: id})
+}
+
+function addPlant(id, plant, plantData) {
+    const parsedId = parseInt(id)
+    console.log('plant', plant, 'plantData',plantData)
+    return db('users_plants').insert({
+        userKey: parsedId,
+        plantKey: plant[0].id,
+        h2oFrequency: plantData.h2oFrequency,
+        nickname: plantData.nickname,
+        image: plantData.image
+    })
+}
+
+function updatePlant(plant){
+    return db('users_plants').where({id: plant.id})
+    .update(plant)
+}
+
+function removePlant(id){
+    return db('users_plants').where({id}).del()
 }
